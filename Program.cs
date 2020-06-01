@@ -13,7 +13,7 @@ namespace parser
             sw.Start();
             var r = await p.crawlUrls(new string []{"https://tengrinews.kz"});
             sw.Stop();
-            System.Console.WriteLine(r.Keys.Count);
+            System.Console.WriteLine($"Parsed Urls: {r.Keys.Count}");
             System.Console.WriteLine("Elapsed:"+sw.Elapsed.TotalSeconds);
         }
     }
