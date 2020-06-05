@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Diagnostics;
+using System.IO;
 
 namespace parser
 {
@@ -36,8 +37,8 @@ namespace parser
 
             List<Task> subUrls = new List<Task>();
             while(tasks.Count>0) {
-                if(_dic.Count>_maxUrls)
-                    return;
+               // if(_dic.Count>_maxUrls)
+               //    return;
                 var t = await Task.WhenAny(tasks);
                 tasks.Remove(t);
                 var p = await t;
@@ -60,6 +61,12 @@ namespace parser
                 else 
                     output.Add("https://tengrinews.kz"+url);
             }
+            FileStream fs = new FileStream($"{page.Url.GetHashCode()}.html",FileMode.Create);
+            StreamWriter sw = new StreamWriter(fs);
+            sw.WriteLine(page.Url);
+            sw.Write(page.Content);
+            sw.Close();
+            page.Content = "";
             return output;
         }
         private async Task<Page> DownloadPage(string url)
